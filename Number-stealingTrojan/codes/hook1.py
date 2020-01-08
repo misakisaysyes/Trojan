@@ -1,5 +1,7 @@
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: UTF-8 -*-
+# one way to mount virus to system,make a shotcut disguise
+
 import os
 import sys
 import os.path

